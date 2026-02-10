@@ -1,0 +1,7 @@
+task:
+  Analyze the pros and cons of local vs cloud LLMs for a small startup.
+
+output_format:
+  - pros
+  - cons
+  - recommendation

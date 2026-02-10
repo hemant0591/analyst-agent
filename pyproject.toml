@@ -1,0 +1,17 @@
+[project]
+name = "analyst-agent"
+version = "0.1.0"
+description = "A task-oriented analyst agent"
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=1.0.0",
+    "PyYAML>=6.0.1"
+]
+
+[project.scripts]
+analyst-agent = "analyst_agent.agent:run_agent"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
