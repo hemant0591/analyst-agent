@@ -1,5 +1,6 @@
 task:
-  Analyze the pros and cons of local vs cloud LLMs for a small startup.
+  Research the latest trends in local LLM deployment.
+  Then summarize the findings.
 
 output_format:
   - pros

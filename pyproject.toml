@@ -5,7 +5,8 @@ description = "A task-oriented analyst agent"
 requires-python = ">=3.10"
 dependencies = [
     "openai>=1.0.0",
-    "PyYAML>=6.0.1"
+    "PyYAML>=6.0.1",
+    "ddgs>=1.0.0",
 ]
 
 [project.scripts]

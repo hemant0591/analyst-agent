@@ -10,9 +10,17 @@ def load_task_from_yaml(path: str) -> str:
         data = yaml.safe_load(f)
     return data["task"]
 
-def run_agent(task: str | None = None, config_path: str = "config/task.yaml") -> AgentState:
+def load_output_format(path: str) -> list:
+    with open(path, "r") as f:
+        data = yaml.safe_load(f)
+    return data["output_format"]
+
+def run_agent(task: str | None = None, output_format: list[str] | None = None, config_path: str = "config/task.yaml") -> AgentState:
     if task is None:
         task = load_task_from_yaml(config_path)
+
+    if output_format is None:
+        output_format = load_output_format(config_path)
 
     state = AgentState(task=task)
 
@@ -23,7 +31,7 @@ def run_agent(task: str | None = None, config_path: str = "config/task.yaml") ->
         # Phase 1: Planning
         if not state.plan:
             print("Planning...")
-            state.plan = create_plan(state.task)
+            state.plan = create_plan(state.task, output_format)
             print(f"Plan created: {state.plan}\n")
             continue
 
