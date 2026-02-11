@@ -16,25 +16,16 @@ def extract_file_path(step: str) -> str | None:
     return None
 
 
-def llm_reason(step: str, context: list[str]) -> str:
+def llm_reason(prompt: str, context: list[str]) -> str:
     """
     Use the LLM to reason about a single step.
     """
 
-    prompt = f"""
-        You are an analytical assistant.
+    full_prompt = f"""
+        {prompt}
 
-        Current task step:
-        {step}
-
-        Previous observations:
+        Previous reasoning context:
         {context}
-
-        
-        If search results are present, use them as factual evidence.
-        Do not hallucinate facts not present in observations.
-
-        Provide a concise and evidence-based response.
     """
 
     response = client.chat.completions.create(

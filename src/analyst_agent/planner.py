@@ -3,39 +3,24 @@ from openai import OpenAI
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-def create_plan(task: str, format: list[str]) -> list[str]:
+def create_plan(task: str, system_prompt: str | None = None) -> list[str]:
     """
     Use an LLM to convert a task into a step-by-step plan.
     """
 
-    prompt = f"""
-        You are a task planner.
-
-        Break the task into executable steps.
-
-        IMPORTANT:
-        - If external information is needed, output a step starting with:
-        SEARCH: <query>
-
-        - If a file needs to be read, output:
-        READ_FILE: <filename>
-
-        - If calculation is needed, output:
-        CALCULATE: <expression>
-
-        - Otherwise, output reasoning steps normally.
-
-        Return the steps as a Python list.
-        
-        Task:
-        {task}
-
-        Constraint: You must structure your response using ONLY these exact headers: {format}.
+    base_prompt = f"""
+        Break the following task into executable steps.
+        Use SEARCH:, READ_FILE:, CALCULATE: tags when appropriate.
     """
+
+    if system_prompt:
+        full_prompt = system_prompt + "\n\n" + base_prompt + f"\nTask: {task}"
+    else:
+        full_prompt = base_prompt + f"\nTask: {task}"
 
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[{"role": "user", "content": full_prompt}],
         temperature=0.2,
     )
 
@@ -53,6 +38,6 @@ def create_plan(task: str, format: list[str]) -> list[str]:
 
     return steps
 
-
-def is_plan_complete(state) -> bool:
-    return state.current_step >= len(state.plan)
+# not needed anymore
+# def is_plan_complete(state) -> bool:
+#     return state.current_step >= len(state.plan)
